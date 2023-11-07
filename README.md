@@ -45,3 +45,4 @@ In the readme describe what improvements you would make, and how you would make 
 - better UI (buttons in cells etc.)
 - abstracting the functions out in separate modules and importing
 - some minor UI issues (empty formula unless the formula column button is clicked)
+- add a title for additional results columns
