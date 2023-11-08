@@ -26,6 +26,7 @@
 - Improved visua/design changes.
 - More responsive design (different screen sizes etc.) and better accessibilit (semantic html).
 - Add error if the column aggregation is not possible due to the specific data type in that column.
+- Add a functionality to select the results column cells to create additional results columns with calculations.
 
 ## Code and Structure (Software Engineers' Perspective)
 
@@ -41,15 +42,22 @@
 - addResultsCol() function basically adds the result to a allResultsCols state variable (array of arrays, i.e. matrix) as well as updates the header names of these columns by updating the colHeaders state variable (array of objects). Similarly, removeResultsCol() function, removes these.
 - getSparseRefFromIndexes() function converts row and column index (numbers) into a special string representation to look up the data from the dummyData.
 - cellRenderer() function that is passed as a callback to a Column component and that has rowIndex and columnIndex as parameters. It has multiple flows depending on certain conditions:
-  1. If we are at the last row (a special case), then the function will return a special cell contianing a drop down menu to select aggregation type. If an appropriate option is selected,
+  1. If we are at the last row (a special case), then the function will return a special cell contianing a drop down menu to select aggregation type. If an appropriate option is selected, it will call onAggregateClick function to do the calculation (this function is stored in utils.ts file)
+  2. If we are dealing with the additional results columns (i.e. the column index is more than or equal than the length of original columns array), then return an editable cell with values from the additional results column
+  3. Otherwise, just return an editable cell of the original values.
+- Finally, the components are rendered. In addition to the FormulaInput components that we have discussed, the Table2 compoent is rendered with the cols array (which in turn contains all the columns - original ones and the added ones if they are there).
 
 ### Opportunities for Improvement of the Code
 
-- Storing Original Column Data: To enhance performance and flexibility, consider storing the original column data in the component's state or abstracting away the data extraction process.
-- State Management: Implement a state management solution like Redux Toolkit to manage the component's state more efficiently, especially when dealing with complex data manipulation.
-- Modular Code: Consider abstracting the functions into separate modules and importing them to improve code organization and maintainability.
+- This code was written in a rish and so many design flaws are evident.
+- After a while, it has become clear that using state management like Redux Toolkit instead of local state would have been more logical. This is due to the fact that there are many state variables and that it would be better to break the code into many components. If redux toolkit is not used, then it becomes cumbersome to decouple the individual bits of code/functions into separate modules, since prop drilling often happens and callback functions need to be passed around. This makes the number of parameters that need to go into individual functions and components quite big, hence not necessarily helping with simplicity and readability.
+- Storing original column data in a state and just accessing it instead of always using dummyData. It was not very evident to me at the beginning, but became clear that in the code I am repeating this ooperation multiple times. Hence, I am going against the DRY (dont repeat yourself) principle. I should have just done it at the start and have accessed this state variable going forward.
+- As I have briefly touched on, the code hsould have been more modular. The OpviaTable component is huge and has many functions and state variables. Ideally, each component only should perform one function, not so may. I started by adding functions only to that component since I was worried about speed and debugging as well as talking it through during the challenge. But shortly after, it became less readable. At some point, I attempted to start separating thes,e but the way I coded them in (not using state management, and not creating pure functions - you could notice that most functions do not return anything but rather modify the local state directly) - it wasn't so easy to decouple. I have done a little bit of that, but not a lot and not as much as I should have. I shuld have done it from the start - i.e. creating many different components and utils functions.
+- there are some minor bugs/ undesirable side effects in the code that could be improved. I didn't spend a lot of time reading the Blueprint documentation, and that may have given me more power to understand the Blueprint components better. For instance, when selecting the aggregation option, the value is not being shown immediately. A user needs to click any other cell once again to see something.
 
 ### Rate of Change Calculations
+
+Before delving into the code, it is important to understand the fundamental concept of the rate of change and arrive at a formula. Rate of change is equivalent to velocity (can also be negative or positive). In this instance, we first need to create a table with results (cell count)
 
 1. Process time-based data format (like the one in the column 0) by the evalFormula function in addition to numbers. For example, users could input expressions like (Cell Count[0] - Cell Count[1]) / (Time[0] - Time[1]) to calculate the rate of cell count growth.
 2. Modify the formula evaluation process to handle time-based calculations by incorporating timestamps or time-related data from the original data source.
@@ -57,7 +65,7 @@
 
 ---
 
-### Original Readme
+### Original Readme of the Task
 
 Congratulations on being selected for the next stage of our interview process!
 
