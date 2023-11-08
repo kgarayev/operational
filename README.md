@@ -18,10 +18,10 @@
 
 ### Additional/Prospective Features
 
-- Enhance the UI by adding more features to improve user experience. For instance, maximize the use of Blueprint's built-in features and properties, such as adjusting row heights, and make column creation more dynamic and seamless.
+- Enhance the UI by adding more features to improve user experience. For instance, maximise the use of Blueprint's built-in features and properties, such as adjusting row heights, and make column creation more dynamic and seamless.
 - Introduce a reset functionality for the aggregation row.
 - Implement a feature to label result column titles/names, allowing users to visually identify what each added column represents.
-- Include a column delete function at the top of each column, symbolized by a small "x" icon in the corner of each column.
+- Include a column delete function at the top of each column, symbolised by a small "x" icon in the corner of each column.
 - Make formula input less restrictive. Instead of using buttons, allow for keyboard input combined with cell/column selection for an easier user experience.
 - Implement improved visual/design changes.
 - Create a more responsive design for different screen sizes and better accessibility with semantic HTML.
@@ -32,7 +32,7 @@
 
 ### How the code works
 
-- Utilizes Blueprint Core and Table components.
+- Utilises Blueprint Core and Table components.
 - Maintains different state variables to add requested features (local state).
 - When the calculation column button is clicked, a FormulaInput component renders, which includes space for displaying the formula, additional buttons for arithmetic operations, and clear, submit, and remove functions.
 - The addToFormula() function is invoked when a cell or arithmetic operator is clicked, adding the character to the formula string stored in the state. This function is called directly by the operators or from within the onCellFocus() callback, which adds a column name to the formula by looking up the columns array (an array of objects).
