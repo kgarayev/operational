@@ -6,63 +6,63 @@
 
 ### Main Features
 
-- A table with the scientific data (datetime and numbers) is rendered to the screen
-- A user could click a "calculation column" button and an additional input box along with specific arithmetic operator buttons and other useful functional buttons appears. this is a restricted input box with only specific input values could be used.
-- the input values could be either the columns that a user could select (by clicking to any cells contained within those columns) or clicking the specific arithmetic operator buttons.
-- Any sensible valid arithmetic formula could be constructed. If a formula is invalid, nothing will happen and a small error message will appear.
-- If a formula is valid and a user is happy to proceed, a submit button could be clicked. This will add a column to the righ tof the table with the results of the formula (i.e. the formula output) for each row of the table except for the last. For example, a user could create a column to calculate 'Cell Density \* Volume'.
-- Any number of reuslts columns could be added with different formulas.
-- Results columns could be removed also by pressing the corresponding button.
-- for each column, the last row is reserved. A dropdown menu in each cell of that last row can be used to select a column aggregation function (max, min, median). Once selected, the cell will show the aggregated value.
-- Calculation Columns: Users can add a new column to the table after they input the formula and if the formula is valid.
+- A table with scientific data, including datetime and numbers, is rendered on the screen.
+- Users can click a "calculation column" button, which reveals an additional input box, specific arithmetic operator buttons, and other functional buttons. This is a restricted input box where only specific input values are allowed.
+- The input values can be either the columns, which users select by clicking on any cells within those columns, or by clicking the specific arithmetic operator buttons.
+- Users can construct any sensible, valid arithmetic formula. If a formula is invalid, nothing will happen, and a small error message will appear.
+- Upon validation of a formula, users can click a submit button. This action adds a column to the right of the table with the formula's results for each row, except the last. For example, users could create a column to calculate 'Cell Density \* Volume'.
+- An unlimited number of results columns can be added, each with different formulas.
+- Results columns can also be removed by pressing the corresponding button.
+- In each column, the last row is reserved. A dropdown menu in each cell of that last row allows users to select a column aggregation function (max, min, median). Once selected, the cell displays the aggregated value.
+- Calculation Columns: Users can add a new column to the table by inputting and validating a formula.
 
 ### Additional/Prospective Features
 
-- Enhannse the UI - add more features for the ease of user experience. For instance, use the Blueprint in-build features and properties to the maximum. Like adjusting row heights. Also, make the column creation a bit more dynamic and seamless.
-- Add a reset functionality for the aggregation row.
-- Add a functionality to take a result column titles/names, so a user could see viually what each added column represents.
-- Column delete functionality at the top of each column (i.e. almost a little "x" icon at the corner of each column).
-- Formula input could be less restrictive. Instead of using buttons, a keyboarded input combined with the cell/column selection could be used for an easier user experience.
-- Improved visua/design changes.
-- More responsive design (different screen sizes etc.) and better accessibilit (semantic html).
-- Add error if the column aggregation is not possible due to the specific data type in that column.
-- Add a functionality to select the results column cells to create additional results columns with calculations.
+- Enhance the UI by adding more features to improve user experience. For instance, maximize the use of Blueprint's built-in features and properties, such as adjusting row heights, and make column creation more dynamic and seamless.
+- Introduce a reset functionality for the aggregation row.
+- Implement a feature to label result column titles/names, allowing users to visually identify what each added column represents.
+- Include a column delete function at the top of each column, symbolized by a small "x" icon in the corner of each column.
+- Make formula input less restrictive. Instead of using buttons, allow for keyboard input combined with cell/column selection for an easier user experience.
+- Implement improved visual/design changes.
+- Create a more responsive design for different screen sizes and better accessibility with semantic HTML.
+- Present an error message if column aggregation is not possible due to the specific data type in that column.
+- Add a feature to select result column cells to create additional results columns with calculations.
 
 ## Code and Structure (Software Engineers' Perspective)
 
 ### How the code works
 
-- Using Blueprint Core and Table components.
-- Storing different state variable to add the requested features (local state).
-- When calculation column button is clicked, a FormulaInput component is rendered. This component includes a space for the formula to be displayed as well as additional buttons for arithmetic operators and clear and submit and remove functionality.
-- When either a cell or arithmetic operator is clicked, addToFormula() function is called to add the characted to the formula string stored in the state. This function is either called directly by the operators or from inside the onCellFocus() callback function that specifically adds a column name to the formula by lookng up the columns array (array of objects)
-- When clearFormula button is clicked clearFormula() function is called to clear the formula state variable
-- When the submit button is clicked, evalFormula() function is called. This function is at the heart of this functionality. It essentially uses math.js module to evaluate the formula at each row by replacing the column names with the individual numerical values for each row. If there is an error in formula evaluation, then an error message is shown to the user (through setting a state variable setFormulaError). If all is okay, then the new results column is added to the list of results columns by calling the addResultsCol() function.
-- addResultsCol() function basically adds the result to a allResultsCols state variable (array of arrays, i.e. matrix) as well as updates the header names of these columns by updating the colHeaders state variable (array of objects). Similarly, removeResultsCol() function, removes these.
-- getSparseRefFromIndexes() function converts row and column index (numbers) into a special string representation to look up the data from the dummyData.
-- cellRenderer() function that is passed as a callback to a Column component and that has rowIndex and columnIndex as parameters. It has multiple flows depending on certain conditions:
-  1. If we are at the last row (a special case), then the function will return a special cell contianing a drop down menu to select aggregation type. If an appropriate option is selected, it will call onAggregateClick function to do the calculation (this function is stored in utils.ts file)
-  2. If we are dealing with the additional results columns (i.e. the column index is more than or equal than the length of original columns array), then return an editable cell with values from the additional results column
-  3. Otherwise, just return an editable cell of the original values.
-- Finally, the components are rendered. In addition to the FormulaInput components that we have discussed, the Table2 compoent is rendered with the cols array (which in turn contains all the columns - original ones and the added ones if they are there).
+- Utilizes Blueprint Core and Table components.
+- Maintains different state variables to add requested features (local state).
+- When the calculation column button is clicked, a FormulaInput component renders, which includes space for displaying the formula, additional buttons for arithmetic operations, and clear, submit, and remove functions.
+- The addToFormula() function is invoked when a cell or arithmetic operator is clicked, adding the character to the formula string stored in the state. This function is called directly by the operators or from within the onCellFocus() callback, which adds a column name to the formula by looking up the columns array (an array of objects).
+- The clearFormula() function is triggered when the clear button is clicked, resetting the formula state variable.
+- When the submit button is clicked, the evalFormula() function is called. This crucial function uses the math.js module to evaluate the formula at each row by substiting the column names with the numerical values for each row. If an error occurs during formula evaluation, an error message is displayed to the user (by setting a state variable, setFormulaError). If everything is correct, a new results column is added by calling the addResultsCol() function.
+- The addResultsCol() function adds the result to the allResultsCols state variable (an array of arrays, i.e., a matrix) and updates the header names of these columns by modifying the colHeaders state variable (an array of objects). Conversely, the removeResultsCol() function removes these.
+- The getSparseRefFromIndexes() function converts row and column indices (numbers) into a special string representation to look up data from dummyData.
+- The cellRenderer() function, passed as a callback to the Column component with rowIndex and columnIndex parameters, has multiple flows depending on certain conditions:
+  1. In the last row (a special case), the function returns a cell containing a dropdown menu for selecting the aggregation type. If an option is selected, it calls the onAggregateClick function to perform the calculation (this function is stored in the utils.ts file).
+  2. When dealing with additional results columns (i.e., the column index is greater than or equal to the length of the original columns array), it returns an editable cell with values from the additional results column.
+  3. Otherwise, it returns an editable cell with original values.
+- Finally, the components are rendered, including the FormulaInput and the Table2 components, which contain all columns, original and added.
 
 ### Opportunities for Improvement of the Code
 
-- This code was written in a rish and so many design flaws are evident.
-- After a while, it has become clear that using state management like Redux Toolkit instead of local state would have been more logical. This is due to the fact that there are many state variables and that it would be better to break the code into many components. If redux toolkit is not used, then it becomes cumbersome to decouple the individual bits of code/functions into separate modules, since prop drilling often happens and callback functions need to be passed around. This makes the number of parameters that need to go into individual functions and components quite big, hence not necessarily helping with simplicity and readability.
-- Storing original column data in a state and just accessing it instead of always using dummyData. It was not very evident to me at the beginning, but became clear that in the code I am repeating this ooperation multiple times. Hence, I am going against the DRY (dont repeat yourself) principle. I should have just done it at the start and have accessed this state variable going forward.
-- As I have briefly touched on, the code hsould have been more modular. The OpviaTable component is huge and has many functions and state variables. Ideally, each component only should perform one function, not so may. I started by adding functions only to that component since I was worried about speed and debugging as well as talking it through during the challenge. But shortly after, it became less readable. At some point, I attempted to start separating thes,e but the way I coded them in (not using state management, and not creating pure functions - you could notice that most functions do not return anything but rather modify the local state directly) - it wasn't so easy to decouple. I have done a little bit of that, but not a lot and not as much as I should have. I shuld have done it from the start - i.e. creating many different components and utils functions.
-- there are some minor bugs/ undesirable side effects in the code that could be improved. I didn't spend a lot of time reading the Blueprint documentation, and that may have given me more power to understand the Blueprint components better. For instance, when selecting the aggregation option, the value is not being shown immediately. A user needs to click any other cell once again to see something.
+- The code was written in a rush, and several design flaws are apparent.
+- It has become evident that using a state management system like Redux Toolkit, instead of local state, would be more logical due to the numerous state variables and the benefit of breaking the code into many components. Without Redux Toolkit, decoupling individual code/functions into separate modules is cumbersome, as prop drilling often occurs and callback functions need to be passed around. This increases the number of parameters needed for individual functions and components, affecting simplicity and readability.
+- Original column data should be stored in a state and accessed instead of always using dummyData. Initially, this was not clear, but it became apparent that repeating this operation multiple times goes against the DRY (don't repeat yourself) principle.
+- As briefly mentioned, the code should have been more modular. The OpviaTable component is extensive and contains many functions and state variables. Ideally, each component should perform only one function. Initially, functions were added only to this component due to concerns about speed, debugging, and explanation during the challenge. However, this resulted in reduced readability. An attempt was made to separate these, but the way they were coded (not using state management and not creating pure functions—most functions modify the local state directly) made decoupling challenging. This should have been done from the start, creating many different components and utility functions.
+- There are minor bugs and undesirable side effects that could be addressed. Not having spent much time reading the Blueprint documentation may have limited a deeper understanding of Blueprint components. For example, when selecting an aggregation option, the value does not immediately display. Users must click another cell to see the result.
 
 ### Rate of Change Calculations
 
-Before delving into the code, it is important to understand the fundamental concept of the rate of change and arrive at a formula. Rate of change is equivalent to velocity (can also be negative or positive). So, in essnece, it is (Cell Count[1] - Cell Count[0]) / (Time[1] - Time[0]). Steps 1 and 2 below are optional, but are a good ones for functionality.
+Before delving into the code, it's important to understand the fundamental concept of rate of change, which is equivalent to velocity (and can be negative or positive). Essentially, it is (Cell Count[1] - Cell Count[0]) / (Time[1] - Time[0]). Steps 1 and 2 below are optional but beneficial for functionality.
 
-1. [Optional] In this instance, we first need to create add a functionality into onCellFocus() and evalFormual() functions to also be able to add results columns varibles into the formula to calculate new columns.
-2. [Optional] Once this is done, a column Cell Count can be calculated by mutiplying Cell Density x Volume.
-3. Following steps 1 and 2 (or if those steps are not implemented, we can simply type the whole big formula into the box: ((Cell Density _ Volume)[1] - (Cell Density _ Volume)[0]) / (Time[1] - Time[0])) We then need to improve the evalFormula function to deal with datetime data type, and not just numbers. For instance, the function could check if the formula contains datetime data and convert this data to computable values (numbers, say conver to milliseconds then seconds).
-4. We need to handle a special case, which would be the first row. The very first row will not have any calculated rate of change value since there is no previous value to compare to. Hence, we can treat it as an edge case and return zero for that first row.
-5. All else should (in theory and conceptually) remain the same (worst case, some small minor changes might be needed).
+1. [Optional] Initially, add functionality to the onCellFocus() and evalFormula() functions to include result column variables in the formula for new column calculations.
+2. [Optional] Following this, a Cell Count column can be calculated by multiplying Cell Density by Volume.
+3. After steps 1 and 2, or by typing the entire formula into the input box: ((Cell Density _ Volume)[1] - (Cell Density _ Volume)[0]) / (Time[1] - Time[0]), we must improve the evalFormula function to handle datetime data types, not just numbers. For instance, the function could check if the formula contains datetime data and convert this to computable values (e.g., convert to milliseconds, then to seconds).
+4. We must handle a special case for the first row. The first row will not have a calculated rate of change value because there is no previous value for comparison. We can treat this as an edge case and return zero for that row.
+5. Theoretically and conceptually, everything else should remain the same, with minor changes needed at most.
 
 ---
 
