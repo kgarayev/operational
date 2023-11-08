@@ -49,6 +49,7 @@ const OpviaTable: React.FC = () => {
 
   // a function that adds the cell reference to the formula string
   // utlilising a Table property - see below
+  // currently only selecting and dealing with original columns (i.e. not new columns)
   const onCellFocus = (focusedCell: FocusedCellCoordinates) => {
     if (focusedCell === null) return;
     if (!showFormula) return;

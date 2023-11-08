@@ -35,7 +35,6 @@
 - Using Blueprint Core and Table components.
 - Storing different state variable to add the requested features (local state).
 - When calculation column button is clicked, a FormulaInput component is rendered. This component includes a space for the formula to be displayed as well as additional buttons for arithmetic operators and clear and submit and remove functionality.
-
 - When either a cell or arithmetic operator is clicked, addToFormula() function is called to add the characted to the formula string stored in the state. This function is either called directly by the operators or from inside the onCellFocus() callback function that specifically adds a column name to the formula by lookng up the columns array (array of objects)
 - When clearFormula button is clicked clearFormula() function is called to clear the formula state variable
 - When the submit button is clicked, evalFormula() function is called. This function is at the heart of this functionality. It essentially uses math.js module to evaluate the formula at each row by replacing the column names with the individual numerical values for each row. If there is an error in formula evaluation, then an error message is shown to the user (through setting a state variable setFormulaError). If all is okay, then the new results column is added to the list of results columns by calling the addResultsCol() function.
@@ -57,11 +56,13 @@
 
 ### Rate of Change Calculations
 
-Before delving into the code, it is important to understand the fundamental concept of the rate of change and arrive at a formula. Rate of change is equivalent to velocity (can also be negative or positive). In this instance, we first need to create a table with results (cell count)
+Before delving into the code, it is important to understand the fundamental concept of the rate of change and arrive at a formula. Rate of change is equivalent to velocity (can also be negative or positive). So, in essnece, it is (Cell Count[1] - Cell Count[0]) / (Time[1] - Time[0]). Steps 1 and 2 below are optional, but are a good ones for functionality.
 
-1. Process time-based data format (like the one in the column 0) by the evalFormula function in addition to numbers. For example, users could input expressions like (Cell Count[0] - Cell Count[1]) / (Time[0] - Time[1]) to calculate the rate of cell count growth.
-2. Modify the formula evaluation process to handle time-based calculations by incorporating timestamps or time-related data from the original data source.
-3. If the time-based calculation is applied, it needs to be obvious that the first row will have a value of 0 (since there is no previous value to calculate the rate of growth from - i.e. relative value).
+1. [Optional] In this instance, we first need to create add a functionality into onCellFocus() and evalFormual() functions to also be able to add results columns varibles into the formula to calculate new columns.
+2. [Optional] Once this is done, a column Cell Count can be calculated by mutiplying Cell Density x Volume.
+3. Following steps 1 and 2 (or if those steps are not implemented, we can simply type the whole big formula into the box: ((Cell Density _ Volume)[1] - (Cell Density _ Volume)[0]) / (Time[1] - Time[0])) We then need to improve the evalFormula function to deal with datetime data type, and not just numbers. For instance, the function could check if the formula contains datetime data and convert this data to computable values (numbers, say conver to milliseconds then seconds).
+4. We need to handle a special case, which would be the first row. The very first row will not have any calculated rate of change value since there is no previous value to compare to. Hence, we can treat it as an edge case and return zero for that first row.
+5. All else should (in theory and conceptually) remain the same (worst case, some small minor changes might be needed).
 
 ---
 
