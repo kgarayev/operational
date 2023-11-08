@@ -30,6 +30,7 @@ export const aggregate = (
   }
 };
 
+// a function to be called when the aggregation option is selected
 export const onAggregateClick = ({
   columnIndex,
   keyword,
