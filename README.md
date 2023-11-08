@@ -20,13 +20,10 @@
 - Modular Code: Consider abstracting the functions into separate modules and importing them to improve code organization and maintainability.
 
 ### Rate of Change Calculations
-To enable rate of change calculations (i.e., Rate of Cell Count Growth):
 
 1. Process time-based data format (like the one in the column 0) by the evalFormula function in addition to numbers. For example, users could input expressions like (Cell Count[0] - Cell Count[1]) / (Time[0] - Time[1]) to calculate the rate of cell count growth.
 2. Modify the formula evaluation process to handle time-based calculations by incorporating timestamps or time-related data from the original data source.
 3. If the time-based calculation is applied, it needs to be obvious that the first row will have a value of 0 (since there is no previous value to calculate the rate of growth from - i.e. relative value). 
-
-By implementing these enhancements, users will have the capability to calculate and visualize rate of change metrics in the table component.
 
 -----------
 
