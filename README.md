@@ -8,23 +8,16 @@
 
 ### Additional/Prospective Features
 
-- getting original column data and storing in state (or abstract away the data extraction)
-- using redux toolkit
-- better UI (buttons in cells etc.)
-- abstracting the functions out in separate modules and importing
-- some minor UI issues (empty formula unless the formula column button is clicked)
-- add a title for additional results columns
+- Enhanced UI: Improve the user interface by adding buttons within table cells or providing more intuitive controls for formula input.
+- Formula Input Enhancements: Address minor UI issues, such as ensuring the formula input is not empty unless the formula column button is clicked.
+- Results Column Title: Add a title for additional results columns to provide clarity and context to users.
 
 
 ### Opportunities for Improvement
 
-- getting original column data and storing in state (or abstract away the data extraction)
-- using redux toolkit
-- better UI (buttons in cells etc.)
-- abstracting the functions out in separate modules and importing
-- some minor UI issues (empty formula unless the formula column button is clicked)
-- add a title for additional results columns
-
+- Storing Original Column Data: To enhance performance and flexibility, consider storing the original column data in the component's state or abstracting away the data extraction process.
+- State Management: Implement a state management solution like Redux Toolkit to manage the component's state more efficiently, especially when dealing with complex data manipulation.
+- Modular Code: Consider abstracting the functions into separate modules and importing them to improve code organization and maintainability.
 
 -----------
 
