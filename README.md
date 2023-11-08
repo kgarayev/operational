@@ -1,4 +1,32 @@
 # Opvia Take-home Product Challenge
+## Completed by: Kenan Garayev
+
+### Main Features
+- Dynamic Formula Input: There's a formula input component that lets users create and apply formulas to the data dynamically.
+- Calculation Columns: Users can add a new column to the table after they input the formula and if the formula is valid. For example, they could create a column to calculate 'Cell Density * Volume'.
+- Data Aggregation Controls: At the end of the table, users can select an aggregation function (Max, Min, Median) to apply to each column. They could do this by selecting an item in a drop-down menu on the last row of the table.
+
+### Additional/Prospective Features
+
+- getting original column data and storing in state (or abstract away the data extraction)
+- using redux toolkit
+- better UI (buttons in cells etc.)
+- abstracting the functions out in separate modules and importing
+- some minor UI issues (empty formula unless the formula column button is clicked)
+- add a title for additional results columns
+
+
+### Opportunities for Improvement
+
+- getting original column data and storing in state (or abstract away the data extraction)
+- using redux toolkit
+- better UI (buttons in cells etc.)
+- abstracting the functions out in separate modules and importing
+- some minor UI issues (empty formula unless the formula column button is clicked)
+- add a title for additional results columns
+
+
+-----------
 
 Congratulations on being selected for the next stage of our interview process!
 
@@ -38,11 +66,3 @@ In the readme describe what improvements you would make, and how you would make 
 - How should I communicate? Please over communicate. We want to learn what it's like to work with you :)
 - Do I need to write tests? - not unless it helps you! We're just looking for "a working MVP that you could give the user access to to get their feedback"
 
-### NOTES
-
-- getting original column data and storing in state (or abstract away the data extraction)
-- using redux toolkit
-- better UI (buttons in cells etc.)
-- abstracting the functions out in separate modules and importing
-- some minor UI issues (empty formula unless the formula column button is clicked)
-- add a title for additional results columns
