@@ -11,6 +11,8 @@ interface AggregateProps {
   setAggregatedValues: (values: { [key: number]: number }) => void;
 }
 
+// a function to calculate an aggregate given a string of numbers
+// uses math.js module
 export const aggregate = (
   keyword: string,
   data: number[],
@@ -23,7 +25,7 @@ export const aggregate = (
     case 'median':
       return math.median(data);
     default:
-      console.log(`${keyword} aggregation is not supported.`);
+      console.log(`${keyword} aggregation is invalid.`);
       return undefined;
   }
 };
